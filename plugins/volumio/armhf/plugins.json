@@ -286,6 +286,24 @@
 						}
 					],
 					"updated": "13-7-2020"
+				},
+				{
+					"prettyName": "iHeartRadio",
+					"icon": "fa-lightbulb-o",
+					"name": "iheartrad",
+					"version": "0.0.1",
+					"url": "http://volumio.github.io/volumio-plugins/plugins/volumio/armhf/music_service/iheartrad/iheartrad.zip",
+					"license": "ISC",
+					"description": "An iHeartRadio plugin to pull radio stations from iheart",
+					"details": "Looks for streams on iheart radio",
+					"author": "psyciknz",
+					"screenshots": [
+						{
+							"image": "",
+							"thumb": ""
+						}
+					],
+					"updated": "2-10-2020"
 				}
 			]
 		},
