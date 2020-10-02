@@ -21,8 +21,8 @@
             "port": 9229,
             "outFiles": ["${workspaceFolder}/volumio-plugins/plugins/**/**/*.js",
                         "c:/volumio/*.js"],
-            "localRoot": "${workspaceFolder}/volumio-plugins/",
-            "remoteRoot": "/data/"
+            "localRoot": "c:/",
+            "remoteRoot": "/"
         }
 
     ]
