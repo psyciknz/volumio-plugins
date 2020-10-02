@@ -158,9 +158,10 @@ iheartrad.prototype.handleBrowseUri = function (curUri) {
 	self.commandRouter.logger.info('iheartrad: found an iheart url');
 	if (curUri === 'iheartrad') {
 		self.commandRouter.logger.info('iheartrad: Default url: ' + curUri);
-		//const matches = iHeart.search(process.argv[2] || 'ZM');
-	        //const station = matches.stations[0];
-	        //const surl = iHeart.streamURL(station);
+		const matches = iHeart.search(process.argv[2] || 'zm-6190');
+		self.commandRouter.logger.info('iheartrad: matches: ' + JSON.stringify(matches));
+	    const station = matches.stations[0];
+	    const surl = iHeart.streamURL(station);
 
 		list.push({
 			service: 'iheartrad',
@@ -169,7 +170,7 @@ iheartrad.prototype.handleBrowseUri = function (curUri) {
 			artist: '',
 			album: '',
 			icon: 'fa fa-list-ol',
-			url: 'http://url-for-zm-heres.com'
+			url: surl
 		});
 		list.push({
 			service: 'iheartrad',
