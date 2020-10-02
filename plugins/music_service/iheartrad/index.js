@@ -305,7 +305,7 @@ iheartrad.prototype.explodeUri = function(uri) {
 	var defer=libQ.defer();
 
 	// Mandatory: retrieve all info for a given URI
-        self.commandRouter.logger.info('iheartRad: explode url');
+    self.commandRouter.logger.info('iheartRad: explode url:' + uri);
 
 	return defer.promise;
 };
