@@ -146,7 +146,7 @@ iheartrad.prototype.handleBrowseUri = function (curUri) {
                 uri: ""
             }, //prev
             lists: [{
-                "availableListViews": ["list"],
+                "availableListViews": ["list","grid"],
                 "items": []
             }] //lists
         } //navigation
@@ -155,52 +155,56 @@ iheartrad.prototype.handleBrowseUri = function (curUri) {
     var list = response.navigation.lists[0].items;
 
     if (curUri.startsWith('iheartrad')) {
-	self.commandRouter.logger.info('iheartrad: found an iheart url: ' + curUri);
-	if (curUri === 'iheartrad') {
-		self.commandRouter.logger.info('iheartrad: Default url: ' + curUri);
-		
-		list.push({
-			service: 'iheartrad',
-			type: 'folder',
-			title: 'Saved',
-			icon: 'fa fa-heart',
-			url: 'iheartrad/saved'
-		});
-
-		list.push({
-			service: 'iheartrad',
-			type: 'folder',
-			title: 'Browse',
-			icon: 'fa fa-tag',
-			url: 'iheartrad/browse'
-		});
-		self.commandRouter.logger.info('iheartrad: Default url: after getRootContent');
-		self.commandRouter.logger.info('iheartrad: list:' + JSON.stringify(list));
-	} //if (curUri === 'iheartrad')
-	else if (curUri === 'iheartrad/saved') {
-		self.commandRouter.logger.info('iheartrad: Try and search for ZM station id');
-		var matches = iHeart.getById('zm-6190');
-		if (matches.length > 0) {
-			self.commandRouter.logger.info(`iheartrad: matches: ${JSON.stringify(matches)}`);
-	    	const station = matches.stations[0];
-	    	const surl = iHeart.streamURL(station);
+		self.commandRouter.logger.info('iheartrad: found an iheart url: ' + curUri);
+		if (curUri === 'iheartrad') {
+			self.commandRouter.logger.info('iheartrad: Default url: ' + curUri);
+			
+			list.push({
+				service: 'iheartrad',
+				type: 'folder',
+				title: 'Saved',
+				artist: '',
+				album: '',
+				icon: 'fa fa-folder-open-o',
+				url: 'iheartrad/saved'
+			});
 
 			list.push({
 				service: 'iheartrad',
-				type: 'playlist',
-				title: 'ZM',
+				type: 'folder',
+				title: 'Browse',
 				artist: '',
 				album: '',
-				icon: 'fa fa-microphone',
-				url: surl
+				icon: 'fa fa-folder-open-o',
+				url: 'iheartrad/browse'
 			});
-		} else
-			self.commandRouter.logger.info('iheartrad: matches: found nothing');
+			self.commandRouter.logger.info('iheartrad: Default url: after getRootContent');
+			self.commandRouter.logger.info('iheartrad: list:' + JSON.stringify(list));
+		} //if (curUri === 'iheartrad')
+		else if (curUri.startsWith('iheartrad/saved')) {
+			self.commandRouter.logger.info('iheartrad: Try and search for ZM station id');
+			var matches = iHeart.getById('zm-6190');
+			if (matches.length > 0) {
+				self.commandRouter.logger.info(`iheartrad: matches: ${JSON.stringify(matches)}`);
+				const station = matches.stations[0];
+				const surl = iHeart.streamURL(station);
 
-	} //else if (curUri === 'iheartrad/zm') 
-	else {
-		self.commandRouter.logger.info('iheartrad: reject');
-		response = libQ.reject();
+				list.push({
+					service: 'webradio',
+					type: 'webradio',
+					title: 'ZM',
+					artist: '',
+					album: '',
+					icon: 'fa fa-microphone',
+					url: surl
+				});
+			} else
+				self.commandRouter.logger.info('iheartrad: matches: found nothing');
+
+		} //else if (curUri === 'iheartrad/zm') 
+		else {
+			self.commandRouter.logger.info('iheartrad: reject');
+			response = libQ.reject();
 	}
 	defer.resolve(response);
     } //if (curUri.startsWith('iheartrad'))
