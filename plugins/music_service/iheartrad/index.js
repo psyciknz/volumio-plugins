@@ -155,7 +155,7 @@ iheartrad.prototype.handleBrowseUri = function (curUri) {
     var list = response.navigation.lists[0].items;
 
     if (curUri.startsWith('iheartrad')) {
-	self.commandRouter.logger.info('iheartrad: found an iheart url');
+	self.commandRouter.logger.info('iheartrad: found an iheart url: ' + curUri);
 	if (curUri === 'iheartrad') {
 		self.commandRouter.logger.info('iheartrad: Default url: ' + curUri);
 		
@@ -165,7 +165,7 @@ iheartrad.prototype.handleBrowseUri = function (curUri) {
 			title: 'Saved',
 			artist: '',
 			album: '',
-			icon: 'fa fa-list-ol',
+			icon: 'fa fa-heart',
 			url: 'saved'
 		});
 
@@ -175,27 +175,31 @@ iheartrad.prototype.handleBrowseUri = function (curUri) {
 			title: 'Browse',
 			artist: '',
 			album: '',
-			icon: 'fa fa-list-ol',
+			icon: 'fa fa-tag',
 			url: 'browse'
 		});
 		self.commandRouter.logger.info('iheartrad: Default url: after getRootContent');
 		self.commandRouter.logger.info('iheartrad: list:' + JSON.stringify(list));
 	} //if (curUri === 'iheartrad')
-	else if (curUri === 'iheartrad/zm') {
-		const matches = iHeart.getById('zm-6190');
-		self.commandRouter.logger.info('iheartrad: matches: ' + JSON.stringify(matches));
-	    const station = matches.stations[0];
-	    const surl = iHeart.streamURL(station);
+	else if (curUri === 'iheartrad/saved') {
+		self.commandRouter.logger.info('iheartrad: Try and search for ZM station id');
+		var matches = iHeart.getById('zm-6190');
+		if (matches.length > 0) {
+			self.commandRouter.logger.info('iheartrad: matches: ' + JSON.stringify(matches));
+	    	const station = matches.stations[0];
+	    	const surl = iHeart.streamURL(station);
 
-		list.push({
-			service: 'iheartrad',
-			type: 'playlist',
-			title: 'ZM',
-			artist: '',
-			album: '',
-			icon: 'fa fa-list-ol',
-			url: surl
-		});
+			list.push({
+				service: 'iheartrad',
+				type: 'playlist',
+				title: 'ZM',
+				artist: '',
+				album: '',
+				icon: 'fa fa-microphone',
+				url: surl
+			});
+		} else
+			self.commandRouter.logger.info('iheartrad: matches: found nothing');
 
 	} //else if (curUri === 'iheartrad/zm') 
 	else {
