@@ -163,8 +163,6 @@ iheartrad.prototype.handleBrowseUri = function (curUri) {
 			service: 'iheartrad',
 			type: 'folder',
 			title: 'Saved',
-			artist: '',
-			album: '',
 			icon: 'fa fa-heart',
 			url: 'saved'
 		});
@@ -173,8 +171,6 @@ iheartrad.prototype.handleBrowseUri = function (curUri) {
 			service: 'iheartrad',
 			type: 'folder',
 			title: 'Browse',
-			artist: '',
-			album: '',
 			icon: 'fa fa-tag',
 			url: 'browse'
 		});
@@ -185,7 +181,7 @@ iheartrad.prototype.handleBrowseUri = function (curUri) {
 		self.commandRouter.logger.info('iheartrad: Try and search for ZM station id');
 		var matches = iHeart.getById('zm-6190');
 		if (matches.length > 0) {
-			self.commandRouter.logger.info('iheartrad: matches: ' + JSON.stringify(matches));
+			self.commandRouter.logger.info(`iheartrad: matches: ${JSON.stringify(matches)}`);
 	    	const station = matches.stations[0];
 	    	const surl = iHeart.streamURL(station);
 
