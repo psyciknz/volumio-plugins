@@ -18,7 +18,11 @@
             "request": "attach",
             "name": "Attach Volumio",
             "address": "localhost",
-            "port": 9229
+            "port": 9229,
+            "outFiles": ["${workspaceFolder}/volumio-plugins/plugins/**/**/*.js",
+                        "c:/volumio/*.js"],
+            "localRoot": "${workspaceFolder}/volumio-plugins/",
+            "remoteRoot": "/data/"
         }
 
     ]

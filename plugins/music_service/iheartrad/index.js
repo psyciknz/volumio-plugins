@@ -161,7 +161,7 @@ iheartrad.prototype.handleBrowseUri = function (curUri) {
 		
 		list.push({
 			service: 'iheartrad',
-			type: 'folder',
+			type: 'streaming-category',
 			title: 'Saved',
 			icon: 'fa fa-heart',
 			url: 'saved'
@@ -169,7 +169,7 @@ iheartrad.prototype.handleBrowseUri = function (curUri) {
 
 		list.push({
 			service: 'iheartrad',
-			type: 'folder',
+			type: 'streaming-category',
 			title: 'Browse',
 			icon: 'fa fa-tag',
 			url: 'browse'
