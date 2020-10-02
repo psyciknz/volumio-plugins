@@ -164,7 +164,7 @@ iheartrad.prototype.handleBrowseUri = function (curUri) {
 			type: 'streaming-category',
 			title: 'Saved',
 			icon: 'fa fa-heart',
-			url: 'saved'
+			url: 'iheartrad/saved'
 		});
 
 		list.push({
@@ -172,7 +172,7 @@ iheartrad.prototype.handleBrowseUri = function (curUri) {
 			type: 'streaming-category',
 			title: 'Browse',
 			icon: 'fa fa-tag',
-			url: 'browse'
+			url: 'iheartrad/browse'
 		});
 		self.commandRouter.logger.info('iheartrad: Default url: after getRootContent');
 		self.commandRouter.logger.info('iheartrad: list:' + JSON.stringify(list));
