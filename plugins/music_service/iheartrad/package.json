@@ -1,6 +1,6 @@
 {
 	"name": "iheartrad",
-	"version": "0.0.1",
+	"version": "0.0.1d",
 	"description": "An iHeartRadio plugin to pull radio stations from iheart",
 	"main": "index.js",
 	"scripts": {

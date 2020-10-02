@@ -76,14 +76,11 @@ iheartrad.prototype.getUIConfig = function() {
     self.commandRouter.i18nJson(__dirname+'/i18n/strings_'+lang_code+'.json',
         __dirname+'/i18n/strings_en.json',
         __dirname + '/UIConfig.json')
-        .then(function(uiconf)
-        {
-	    uiconf.sections[0].content[0].value = 'folder';
-
+        .then(function(uiconf) {
+	     uiconf.sections[0].content[0].value = self.config.get('experimental', false);
             defer.resolve(uiconf);
         })
-        .fail(function()
-        {
+        .fail(function() { 
             defer.reject(new Error());
         });
 
@@ -121,7 +118,7 @@ iheartrad.prototype.addToBrowseSources = function () {
 	// Use this function to add your music service plugin to music sources
 	self.commandRouter.logger.info('iheartrad.addTobrowseSources');
 	var data = {
-		name: 'iheartrad', 
+		name: 'iHeartRadio', 
 		uri: 'iheartrad',
 		plugin_type:'music_service',
 		plugin_name:'iheartrad'
@@ -140,49 +137,66 @@ iheartrad.prototype.handleBrowseUri = function (curUri) {
 	var self = this;
 
 	self.commandRouter.logger.info('iheartrad.handleBrowseUri: ' + curUri);
-	var response;
-
-	if (curUri.startsWith('iheartrad')) {
-		self.commandRouter.logger.info('iheartrad: found an iheart url');
-		if (curUri === 'iheartrad') {
-			self.commandRouter.logger.info('iheartrad: Default url: ' + curUri);
-			//response = self.getRootContent();
-			self.commandRouter.logger.info('iheartrad: Default url: after getRootContent');
-		}
-		else if (curUri === 'iheartrad/zm') {
-			response = self.getRadioContent('zm');
-
-		}
-		else {
-			self.commandRouter.logger.info('iheartrad: reject');
-			response = libQ.reject();
-		}
-	  }
-	  else
-		self.commandRouter.logger.info('iheartrad.handleBrowseUri: No uri specififed');
-
-	return response;
-};
-
-iheartrad.prototype.getRootContent = function() {
-	var self=this;
-	self.commandRouter.logger.info('iheartrad: GetRootContent');
-	var response;
+	var response = [];
 	var defer = libQ.defer();
 
-	response = self.rootNavigation;
-	response.navigation.lists[0].items = [];
-	var radio = {
-	  service: 'iheartrad',
-	  type: 'folder',
-	  title: 'stations',
-	  uri: 'iheartrad/stations'
-	};
-	self.commandRouter.logger.info('iheartrad: GetRootContent: Created station, pushing to list: ' + radio);
-	response.navigation.lists[0].items.push(radio);
-	
+	var response = {
+        navigation: {
+            prev: {
+                uri: ""
+            }, //prev
+            lists: [{
+                "availableListViews": ["list"],
+                "items": []
+            }] //lists
+        } //navigation
+    }; //var response
+
+    var list = response.navigation.lists[0].items;
+
+    if (curUri.startsWith('iheartrad')) {
+	self.commandRouter.logger.info('iheartrad: found an iheart url');
+	if (curUri === 'iheartrad') {
+		self.commandRouter.logger.info('iheartrad: Default url: ' + curUri);
+		//const matches = iHeart.search(process.argv[2] || 'ZM');
+	        //const station = matches.stations[0];
+	        //const surl = iHeart.streamURL(station);
+
+		list.push({
+			service: 'iheartrad',
+			type: 'playlist',
+			title: 'ZM',
+			artist: '',
+			album: '',
+			icon: 'fa fa-list-ol',
+			url: 'http://url-for-zm-heres.com'
+		});
+		list.push({
+			service: 'iheartrad',
+			type: 'playlist',
+			title: 'ZM2',
+			artist: '',
+			album: '',
+			icon: 'fa fa-list-ol',
+			url: 'http://url-for-zm-heres.com'
+		});
+		self.commandRouter.logger.info('iheartrad: Default url: after getRootContent');
+		self.commandRouter.logger.info('iheartrad: list:' + JSON.stringify(list));
+	} //if (curUri === 'iheartrad')
+	else if (curUri === 'iheartrad/zm') {
+		response = self.getRadioContent('zm');
+
+	} //else if (curUri === 'iheartrad/zm') 
+	else {
+		self.commandRouter.logger.info('iheartrad: reject');
+		response = libQ.reject();
+	}
 	defer.resolve(response);
-	return defer.promise;
+    } //if (curUri.startsWith('iheartrad'))
+    else
+	self.commandRouter.logger.info('iheartrad.handleBrowseUri: No uri specififed: ' + curUri);
+
+    return defer.promise;
 };
 
 iheartrad.prototype.getRadioContent = function (stationname) {
@@ -194,14 +208,13 @@ iheartrad.prototype.getRadioContent = function (stationname) {
 	
 	var newStation = {
 		service: 'iheartrad',
-		type: 'mywebradio',
+		type: 'playlist',
 		title: 'zm',
 		artist: '',
 		album: '',
 		icon: 'fa fa-music',
 		URL: url
 	};
-	self.navTree['ZM'] = newStation;
 
 	self.commandRouter.logger.info('iheartrad: station url: ' + url);
 
@@ -219,7 +232,7 @@ iheartrad.prototype.clearAddPlayTrack = function(track) {
 	var self = this;
 	self.commandRouter.pushConsoleMessage('[' + Date.now() + '] ' + 'iheartrad::clearAddPlayTrack');
 
-	self.commandRouter.logger.info(JSON.stringify(track));
+	self.commandRouter.logger.info('iheartRad: ' + JSON.stringify(track));
 
 	return self.sendSpopCommand('uplay', [track.uri]);
 };
