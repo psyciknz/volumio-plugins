@@ -123,7 +123,7 @@ iheartrad.prototype.addToBrowseSources = function () {
 		plugin_type:'music_service',
 		plugin_name:'iheartrad',
 		icon: 'fa fa-microphone',
-		albumart: '/albumart?sourceicon=music_service/iheartrad/iheart.png'
+		albumart: '/albumart?sourceicon=music_service/iheartrad/iheart.svg'
 
 	};
 	this.commandRouter.volumioAddToBrowseSources(data);
@@ -208,51 +208,55 @@ iheartrad.prototype.handleBrowseUri = function (curUri) {
 		else {
 			self.commandRouter.logger.info('iheartrad: reject');
 			response = libQ.reject();
-	}
-	defer.resolve(response);
+		}
+		defer.resolve(response);
     } //if (curUri.startsWith('iheartrad'))
     else
-	self.commandRouter.logger.info('iheartrad.handleBrowseUri: No uri specififed: ' + curUri);
+		self.commandRouter.logger.info('iheartrad.handleBrowseUri: No uri specififed: ' + curUri);
 
     return defer.promise;
-};
-
-iheartrad.prototype.getRadioContent = function (stationname) {
-	var self=this;
-	self.commandRouter.logger.info('iheartRad: GetRadioContent: ' + stationame);
-	const matches = iheart.search(process.argv[2] || 'ZM');
-	const station = matches.stations[0];
-	const url = iheart.streamURL(station);
-	
-	var newStation = {
-		service: 'iheartrad',
-		type: 'playlist',
-		title: 'zm',
-		artist: '',
-		album: '',
-		icon: 'fa fa-music',
-		URL: url
-	};
-
-	self.commandRouter.logger.info('iheartrad: station url: ' + url);
-
-	self.commandRouter.logger.info('iheartrad: station : ' + station);
-	
-	response.navigation.lists[0].items.push(newStation);
-	defer.resolve(response);
-
-	return defer.promise;
 };
 
 
 // Define a method to clear, add, and play an array of tracks
 iheartrad.prototype.clearAddPlayTrack = function(track) {
 	var self = this;
+	var defer = libQ.defer();
+
 	self.commandRouter.pushConsoleMessage('[' + Date.now() + '] ' + 'iheartrad::clearAddPlayTrack');
 
 	self.commandRouter.logger.info('iheartRad: ' + JSON.stringify(track));
 
-	return self.sendSpopCommand('uplay', [track.uri]);
+	return self.mpdPlugin.sendMpdCommand('stop', [])
+	.then(function() {
+		return self.mpdPlugin.sendMpdCommand('clear', []);
+	})
+	.then(function() {
+		return self.mpdPlugin.sendMpdCommand('add "'+track.uri+'"',[]);
+	})
+	.then(function () {
+		self.commandRouter.pushToastMessage('info',
+			self.getRadioI18nString('PLUGIN_NAME'),
+			self.getRadioI18nString('WAIT_FOR_RADIO_CHANNEL'));
+			return self.mpdPlugin.sendMpdCommand('play', []).then(function () {
+				switch (track.radioType) {
+				  case 'kbs':
+				  case 'sbs':
+				  case 'mbc':
+					return self.mpdPlugin.getState().then(function (state) {
+					  return self.commandRouter.stateMachine.syncState(state, self.serviceName);
+					});
+					break;
+				  default:
+					self.commandRouter.stateMachine.setConsumeUpdateService('mpd');
+					return libQ.resolve();
+				}
+			  })
+			})
+			.fail(function (e) {
+			  return defer.reject(new Error());
+			});
+	
 };
 
 iheartrad.prototype.seek = function (timepos) {
