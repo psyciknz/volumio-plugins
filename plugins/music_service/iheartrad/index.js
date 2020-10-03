@@ -165,7 +165,7 @@ iheartrad.prototype.handleBrowseUri = function (curUri) {
 			
 			list.push({
 				service: 'iheartrad',
-				type: 'folder',
+				type: 'saved',
 				title: 'Saved',
 				artist: '',
 				album: '',
@@ -175,7 +175,7 @@ iheartrad.prototype.handleBrowseUri = function (curUri) {
 
 			list.push({
 				service: 'iheartrad',
-				type: 'folder',
+				type: 'browse',
 				title: 'Browse',
 				artist: '',
 				album: '',
@@ -195,7 +195,7 @@ iheartrad.prototype.handleBrowseUri = function (curUri) {
 
 				list.push({
 					service: 'webradio',
-					type: 'station',
+					type: 'webradio',
 					title: 'ZM',
 					artist: '',
 					album: '',
