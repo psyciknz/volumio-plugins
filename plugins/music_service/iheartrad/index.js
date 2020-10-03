@@ -142,7 +142,7 @@ iheartrad.prototype.handleBrowseUri = function (curUri) {
 	self.commandRouter.logger.info('iheartrad.handleBrowseUri: ' + curUri);
 	console.log('handleBrowseUri: '+curUri);
 	var response = [];
-	//var defer = libQ.defer();
+	var defer = libQ.defer();
 
 	var response = {
         navigation: {
@@ -210,13 +210,13 @@ iheartrad.prototype.handleBrowseUri = function (curUri) {
 			self.commandRouter.logger.info('iheartrad: reject');
 			response = libQ.reject();
 		}
-		//defer.resolve(response);
+		defer.resolve(response);
     } //if (curUri.startsWith('iheartrad'))
     else
 		self.commandRouter.logger.info('iheartrad.handleBrowseUri: No uri specififed: ' + curUri);
 
-	//return defer.promise;
-	return response;
+	return defer.promise;
+	//return response;
 };
 
 
