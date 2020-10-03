@@ -121,7 +121,10 @@ iheartrad.prototype.addToBrowseSources = function () {
 		name: 'iHeartRadio', 
 		uri: 'iheartrad',
 		plugin_type:'music_service',
-		plugin_name:'iheartrad'
+		plugin_name:'iheartrad',
+		icon: 'fa fa-microphone',
+		albumart: '/albumart?sourceicon=music_service/iheartrad/iheart.png'
+
 	};
 	this.commandRouter.volumioAddToBrowseSources(data);
 };
