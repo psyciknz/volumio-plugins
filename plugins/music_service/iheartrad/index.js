@@ -140,6 +140,7 @@ iheartrad.prototype.handleBrowseUri = function (curUri) {
 	var self = this;
 
 	self.commandRouter.logger.info('iheartrad.handleBrowseUri: ' + curUri);
+	console.log('handleBrowseUri: '+curUri);
 	var response = [];
 	var defer = libQ.defer();
 
