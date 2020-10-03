@@ -119,7 +119,7 @@ iheartrad.prototype.addToBrowseSources = function () {
 	self.commandRouter.logger.info('iheartrad.addTobrowseSources');
 	var data = {
 		name: 'iHeartRadio', 
-		uri: 'iheartrad',
+		uri: '/iheartrad',
 		plugin_type:'music_service',
 		plugin_name:'iheartrad',
 		icon: 'fa fa-microphone',
@@ -146,7 +146,7 @@ iheartrad.prototype.handleBrowseUri = function (curUri) {
 	var response = {
         navigation: {
             prev: {
-                uri: ""
+                uri: "/iheartrad"
             }, //prev
             lists: [{
                 "availableListViews": ["list","grid"],
@@ -157,9 +157,9 @@ iheartrad.prototype.handleBrowseUri = function (curUri) {
 
     var list = response.navigation.lists[0].items;
 
-    if (curUri.startsWith('iheartrad')) {
+    if (curUri.startsWith('/iheartrad')) {
 		self.commandRouter.logger.info('iheartrad: found an iheart url: ' + curUri);
-		if (curUri === 'iheartrad') {
+		if (curUri === '/iheartrad') {
 			self.commandRouter.logger.info('iheartrad: Default url: ' + curUri);
 			
 			list.push({
@@ -169,7 +169,7 @@ iheartrad.prototype.handleBrowseUri = function (curUri) {
 				artist: '',
 				album: '',
 				icon: 'fa fa-folder-open-o',
-				url: 'iheartrad/saved'
+				url: '/iheartrad/saved'
 			});
 
 			list.push({
@@ -179,7 +179,7 @@ iheartrad.prototype.handleBrowseUri = function (curUri) {
 				artist: '',
 				album: '',
 				icon: 'fa fa-folder-open-o',
-				url: 'iheartrad/browse'
+				url: '/iheartrad/browse'
 			});
 			self.commandRouter.logger.info('iheartrad: Default url: after getRootContent');
 			self.commandRouter.logger.info('iheartrad: list:' + JSON.stringify(list));
@@ -194,12 +194,12 @@ iheartrad.prototype.handleBrowseUri = function (curUri) {
 
 				list.push({
 					service: 'webradio',
-					type: 'webradio',
+					type: 'station',
 					title: 'ZM',
 					artist: '',
 					album: '',
 					icon: 'fa fa-microphone',
-					url: surl
+					url: 'https://i.mjh.nz/nz/radio.ih.6190'
 				});
 			} else
 				self.commandRouter.logger.info('iheartrad: matches: found nothing');
